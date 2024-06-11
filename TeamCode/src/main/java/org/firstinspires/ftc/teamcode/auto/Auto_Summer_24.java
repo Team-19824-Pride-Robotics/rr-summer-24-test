@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.auto;
 
 // RR-specific imports
 import androidx.annotation.NonNull;
@@ -19,8 +19,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 @Config
-@Autonomous(name = "rr_auto_test", group = "Autonomous")
-public class rr_auto_test extends LinearOpMode {
+@Autonomous(name = "Auto_Summer_24", group = "Autonomous")
+public class Auto_Summer_24 extends LinearOpMode {
 
     /***********************************************************
      First we create our mechanism classes and add "Actions" inside
