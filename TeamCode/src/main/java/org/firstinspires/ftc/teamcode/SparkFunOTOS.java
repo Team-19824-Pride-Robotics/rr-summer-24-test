@@ -135,6 +135,7 @@ public class SparkFunOTOS extends I2cDeviceSynchDevice {
     protected static final double RPSS_TO_INT16 = 32768.0 / (Math.PI * 1000.0);
     protected static final double INT16_TO_RPSS = 1.0 / RPSS_TO_INT16;
 
+
     // 2D pose structure, including x and y coordinates and heading angle.
     // Although pose is traditionally used for position and orientation, this
     // structure is also used for velocity and accleration by the OTOS driver

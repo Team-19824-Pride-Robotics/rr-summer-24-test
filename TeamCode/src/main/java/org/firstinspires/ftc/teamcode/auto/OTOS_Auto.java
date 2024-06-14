@@ -1,9 +1,7 @@
-/*
-    SPDX-License-Identifier: MIT
+package org.firstinspires.ftc.teamcode.auto;
 
-    Copyright (c) 2024 SparkFun Electronics
-*/
-package org.firstinspires.ftc.teamcode.teleop;
+
+import static java.lang.Math.abs;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -11,19 +9,42 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.SparkFunOTOS;
 
-@TeleOp(name = "Teleop_OTOS")
+
+
+@Autonomous(name = "OTOS_Auto")
 //@Disabled
-public class Teleop_OTOS extends LinearOpMode {
+public class OTOS_Auto extends LinearOpMode {
     // Create an instance of the sensor
     SparkFunOTOS myOtos;
+    DcMotorEx leftFront, leftBack, rightBack, rightFront;
 
     @Override
     public void runOpMode() throws InterruptedException {
+
+        leftFront = hardwareMap.get(DcMotorEx .class, "leftFront");
+        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
+        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
+        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        // TODO: reverse motor directions if needed
+        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+
         // Get a reference to the sensor
         myOtos = hardwareMap.get(SparkFunOTOS.class, "sensor_otos");
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -33,43 +54,76 @@ public class Teleop_OTOS extends LinearOpMode {
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
+        double pid_output = 0;
+
         // Wait for the start button to be pressed
         waitForStart();
 
-        // Loop until the OpMode ends
-        while (opModeIsActive()) {
-            // Get the latest position, which includes the x and y coordinates, plus the
-            // heading angle
-            SparkFunOTOS.Pose2D pos = myOtos.getPosition();
+        while(opModeIsActive()) {
 
-            // Reset the tracking if the user requests it
-            if (gamepad1.y) {
-                myOtos.resetTracking();
-            }
+            drive.setDrivePowers(new PoseVelocity2d(new Vector2d(pid_output, 0), 0));
 
-            // Re-calibrate the IMU if the user requests it
-            if (gamepad1.x) {
-                myOtos.calibrateImu();
-            }
+            driveStraight(10);
+            sleep(1000);
+            driveStraight(5);
 
-            if (pos.x < 20 && pos.y < 20) {
-                drive.setDrivePowers(new PoseVelocity2d(
-                        new Vector2d(
-                                -gamepad1.left_stick_y,
-                                -gamepad1.left_stick_x
-                        ),
-                        -gamepad1.right_stick_x
-                ));
-            }
+        }
 
-            else {
-                drive.setDrivePowers(new PoseVelocity2d(new Vector2d(0,0),0));
-            }
+    }
+    private void driveStraight(double dist){
 
-            // Inform user of available controls
-            telemetry.addLine("Press Y (triangle) on Gamepad to reset tracking");
-            telemetry.addLine("Press X (square) on Gamepad to calibrate the IMU");
-            telemetry.addLine();
+        /****************************************
+         the driveStraight method takes in a distance and drives in a straight
+         line until it reaches the set point
+         *****************************************/
+
+        double setPoint;
+        double Kp, Ki, Kd;
+        double out, error = 2, derivative;
+
+        // Get the latest position, which includes the x and y coordinates, plus the
+        // heading angle
+        SparkFunOTOS.Pose2D pos = myOtos.getPosition();
+
+        /*
+         * Proportional Integral Derivative Controller
+         */
+
+        Kp = 1;
+        Ki = 0;
+        Kd = 0;
+
+        setPoint = pos.x + dist;
+
+        double integralSum = 0;
+
+        double lastError = 0;
+
+// Elapsed timer class from SDK, please use it, it's epic
+        ElapsedTime timer = new ElapsedTime();
+
+        while (abs(error) > 0.1) {
+
+            // Get the current position
+            SparkFunOTOS.Pose2D currentPos = myOtos.getPosition();
+
+            // calculate the error
+            error = setPoint - currentPos.x;
+
+            // rate of change of the error
+            derivative = (error - lastError) / timer.seconds();
+
+            // sum of all error over time
+            integralSum = integralSum + (error * timer.seconds());
+
+            out = (Kp * error) + (Ki * integralSum) + (Kd * derivative);
+
+            //return(out);
+
+            lastError = error;
+
+            // reset the timer for next time
+            timer.reset();
 
             // Log the position to the telemetry
             telemetry.addData("X coordinate", pos.x);
@@ -78,6 +132,8 @@ public class Teleop_OTOS extends LinearOpMode {
 
             // Update the telemetry on the driver station
             telemetry.update();
+
+
         }
     }
 
@@ -151,15 +207,9 @@ public class Teleop_OTOS extends LinearOpMode {
         SparkFunOTOS.Pose2D currentPosition = new SparkFunOTOS.Pose2D(0, 0, 0);
         myOtos.setPosition(currentPosition);
 
-        // Get the hardware and firmware version
-        SparkFunOTOS.Version hwVersion = new SparkFunOTOS.Version();
-        SparkFunOTOS.Version fwVersion = new SparkFunOTOS.Version();
-        myOtos.getVersionInfo(hwVersion, fwVersion);
 
-        telemetry.addLine("OTOS configured! Press start to get position data!");
-        telemetry.addLine();
-        telemetry.addLine(String.format("OTOS Hardware Version: v%d.%d", hwVersion.major, hwVersion.minor));
-        telemetry.addLine(String.format("OTOS Firmware Version: v%d.%d", fwVersion.major, fwVersion.minor));
-        telemetry.update();
     }
+
+
 }
+
