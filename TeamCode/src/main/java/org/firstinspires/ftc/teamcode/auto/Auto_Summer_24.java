@@ -22,6 +22,11 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 @Autonomous(name = "Auto_Summer_24", group = "Autonomous")
 public class Auto_Summer_24 extends LinearOpMode {
 
+    //some variables we might need to tweak
+    public static double turnAmt = 190;
+    public static double finalHeading = 5;
+
+
     /***********************************************************
      First we'll map out our trajectories. This is where we can
      choose a path based on the location of our team element
@@ -31,7 +36,7 @@ public class Auto_Summer_24 extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         // instantiate your MecanumDrive at a particular pose.
-        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(11.8, 61.7, Math.toRadians(90)));
+        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, Math.toRadians(90)));
         // make a Claw instance
         Claw claw = new Claw(hardwareMap);
         // make a Lift instance
@@ -40,21 +45,22 @@ public class Auto_Summer_24 extends LinearOpMode {
         // vision here that outputs position
         int visionOutputPosition = 1;
 
+        
         Action trajectoryAction1;
         Action trajectoryAction2;
         Action trajectoryAction3;
         Action trajectoryActionCloseOut;
 
         trajectoryAction1 = drive.actionBuilder(drive.pose)
-                .lineToYSplineHeading(33, Math.toRadians(0))
-                .waitSeconds(2)
-                .setTangent(Math.toRadians(90))
-                .lineToY(48)
+//                .lineToYSplineHeading(24, Math.toRadians(0))
+//                .waitSeconds(2)
                 .setTangent(Math.toRadians(0))
-                .lineToX(32)
-                .strafeTo(new Vector2d(44.5, 30))
-                .turn(Math.toRadians(180))
-                .lineToX(47.5)
+//                .lineToY(24)
+//                .setTangent(Math.toRadians(0))
+//                .lineToX(24)
+                .strafeTo(new Vector2d(20, 20))
+                .turn(Math.toRadians(turnAmt))
+//                .lineToX(12)
                 .waitSeconds(3)
                 .build();
         trajectoryAction2 = drive.actionBuilder(drive.pose)
@@ -74,6 +80,7 @@ public class Auto_Summer_24 extends LinearOpMode {
                 .build();
         trajectoryActionCloseOut = drive.actionBuilder(drive.pose)
                 .strafeTo(new Vector2d(48, 12))
+                .turnTo(finalHeading)
                 .build();
 
         // actions that need to happen on init; for instance, a claw tightening.
@@ -116,8 +123,7 @@ public class Auto_Summer_24 extends LinearOpMode {
                         trajectoryActionChosen,
                         lift.liftUp(),
                         claw.openClaw(),
-                        lift.liftDown(),
-                        trajectoryActionCloseOut
+                        lift.liftDown()
                 )
         );
 
