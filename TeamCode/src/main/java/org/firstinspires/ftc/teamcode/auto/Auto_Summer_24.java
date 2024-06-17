@@ -25,7 +25,7 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 public class Auto_Summer_24 extends LinearOpMode {
 
     //some variables we might need to tweak
-    public static double turnAmt = 190;
+    public static double turnAmt = 180;
     public static double finalHeading = 190;
 
 
@@ -54,10 +54,13 @@ public class Auto_Summer_24 extends LinearOpMode {
         Action trajectoryActionCloseOut;
 
         trajectoryAction1 = drive.actionBuilder(drive.pose)
+                .setTangent(0)
+                .splineToConstantHeading(new Vector2d(10, 48), Math.toRadians(0))
+                //.splineTo(new Vector2d(10, 48), Math.toRadians(0))
                 //.strafeTo(new Vector2d(20, -40))
-                .splineToConstantHeading(new Vector2d(20, -40), 0)
+                //.lineToY(12)
                 //.turn(Math.toRadians(turnAmt))
-                //.lineToY(0)
+                //.lineToX(0)
                 //.waitSeconds(3)
                 .build();
         trajectoryAction2 = drive.actionBuilder(drive.pose)
@@ -76,7 +79,7 @@ public class Auto_Summer_24 extends LinearOpMode {
                 .waitSeconds(3)
                 .build();
         trajectoryActionCloseOut = drive.actionBuilder(drive.pose)
-                .strafeTo(new Vector2d(10, -20))
+                //.strafeTo(new Vector2d(10, -20))
                 //.turnTo(finalHeading)
                 .waitSeconds(2)
                 .build();
