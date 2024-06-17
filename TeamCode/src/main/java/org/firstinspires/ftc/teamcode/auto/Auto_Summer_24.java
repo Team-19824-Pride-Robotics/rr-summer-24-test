@@ -5,8 +5,10 @@ import androidx.annotation.NonNull;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 
@@ -24,7 +26,7 @@ public class Auto_Summer_24 extends LinearOpMode {
 
     //some variables we might need to tweak
     public static double turnAmt = 190;
-    public static double finalHeading = 5;
+    public static double finalHeading = 190;
 
 
     /***********************************************************
@@ -36,7 +38,7 @@ public class Auto_Summer_24 extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         // instantiate your MecanumDrive at a particular pose.
-        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, Math.toRadians(90)));
+        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, Math.toRadians(0)));
         // make a Claw instance
         Claw claw = new Claw(hardwareMap);
         // make a Lift instance
@@ -45,46 +47,43 @@ public class Auto_Summer_24 extends LinearOpMode {
         // vision here that outputs position
         int visionOutputPosition = 1;
 
-        
+
         Action trajectoryAction1;
         Action trajectoryAction2;
         Action trajectoryAction3;
         Action trajectoryActionCloseOut;
 
         trajectoryAction1 = drive.actionBuilder(drive.pose)
-//                .lineToYSplineHeading(24, Math.toRadians(0))
-//                .waitSeconds(2)
-                .setTangent(Math.toRadians(0))
-//                .lineToY(24)
-//                .setTangent(Math.toRadians(0))
-//                .lineToX(24)
-                .strafeTo(new Vector2d(20, 20))
-                .turn(Math.toRadians(turnAmt))
-//                .lineToX(12)
-                .waitSeconds(3)
+                //.strafeTo(new Vector2d(20, -40))
+                .splineToConstantHeading(new Vector2d(20, -40), 0)
+                //.turn(Math.toRadians(turnAmt))
+                //.lineToY(0)
+                //.waitSeconds(3)
                 .build();
         trajectoryAction2 = drive.actionBuilder(drive.pose)
-                .lineToY(37)
-                .setTangent(Math.toRadians(0))
-                .lineToX(18)
-                .waitSeconds(3)
-                .setTangent(Math.toRadians(0))
-                .lineToXSplineHeading(46, Math.toRadians(180))
+//                .lineToY(37)
+//                .setTangent(Math.toRadians(0))
+//                .lineToX(18)
+//                .waitSeconds(3)
+//                .setTangent(Math.toRadians(0))
+//                .lineToXSplineHeading(46, Math.toRadians(180))
                 .waitSeconds(3)
                 .build();
         trajectoryAction3 = drive.actionBuilder(drive.pose)
-                .lineToYSplineHeading(33, Math.toRadians(180))
-                .waitSeconds(2)
-                .strafeTo(new Vector2d(46, 30))
+//                .lineToYSplineHeading(33, Math.toRadians(180))
+//                .waitSeconds(2)
+//                .strafeTo(new Vector2d(46, 30))
                 .waitSeconds(3)
                 .build();
         trajectoryActionCloseOut = drive.actionBuilder(drive.pose)
-                .strafeTo(new Vector2d(48, 12))
-                .turnTo(finalHeading)
+                .strafeTo(new Vector2d(10, -20))
+                //.turnTo(finalHeading)
+                .waitSeconds(2)
                 .build();
 
         // actions that need to happen on init; for instance, a claw tightening.
         Actions.runBlocking(claw.closeClaw());
+
 
         //this loop runs during init to give the sensors or camera time to find the team
         //element and set the position so that we know which trajectory to run
@@ -117,15 +116,13 @@ public class Auto_Summer_24 extends LinearOpMode {
         }
 
         //check out the "Actions" section of the docs for an example using parallel actions
-
-        Actions.runBlocking(
-                new SequentialAction(
-                        trajectoryActionChosen,
-                        lift.liftUp(),
-                        claw.openClaw(),
-                        lift.liftDown()
-                )
-        );
+        //Actions like a lift going up could usually happen in parallel with a trajectory
+        Actions.runBlocking(new SequentialAction(
+                trajectoryActionChosen,
+                claw.openClaw(),
+                //if an action needs time to run (like a claw opening), use a SleepAction
+                new SleepAction(2),
+                trajectoryActionCloseOut));
 
 
     }

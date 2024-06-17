@@ -6,26 +6,33 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.roadrunner.Actions;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.SparkFunOTOS;
-
+@Config
 @TeleOp(name = "Teleop_OTOS")
 //@Disabled
 public class Teleop_OTOS extends LinearOpMode {
     // Create an instance of the sensor
     SparkFunOTOS myOtos;
+    Servo claw;
 
     @Override
     public void runOpMode() throws InterruptedException {
         // Get a reference to the sensor
         myOtos = hardwareMap.get(SparkFunOTOS.class, "sensor_otos");
+        claw = hardwareMap.get(Servo.class, "claw");
+
+        //send the telemetry to the dashboard
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         // All the configuration for the OTOS is done in this helper method, check it out!
@@ -52,7 +59,14 @@ public class Teleop_OTOS extends LinearOpMode {
                 myOtos.calibrateImu();
             }
 
-            if (pos.x < 20 && pos.y < 20) {
+            if(gamepad1.a) {
+                claw.setPosition(0.8);
+            }
+            if(gamepad1.b) {
+                claw.setPosition(0.2);
+            }
+
+            if (pos.x < 200 && pos.y < 200) {
                 drive.setDrivePowers(new PoseVelocity2d(
                         new Vector2d(
                                 -gamepad1.left_stick_y,
