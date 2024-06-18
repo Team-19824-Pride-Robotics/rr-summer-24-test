@@ -65,7 +65,7 @@ public class Teleop_RR_Actions extends LinearOpMode {
             double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
             double rx = gamepad1.right_stick_x;
 
-            
+
             double frontLeftPower = (y + rx) ;
             double backLeftPower = (y + rx) ;
             double frontRightPower = (y - rx) ;
