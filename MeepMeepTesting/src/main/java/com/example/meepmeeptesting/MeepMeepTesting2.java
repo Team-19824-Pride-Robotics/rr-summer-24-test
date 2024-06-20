@@ -29,12 +29,7 @@ public class MeepMeepTesting2 {
                         .lineToX(20)
                         .splineToConstantHeading(new Vector2d(50, 40), Math.toRadians(0))
                         .setTangent(Math.toRadians(270))
-                        .splineToConstantHeading(new Vector2d(40, 10), Math.toRadians(0))
-                        .lineToX(-60)
-                        .lineToX(20)
-                        .splineToConstantHeading(new Vector2d(50, 40), Math.toRadians(0))
-                        .setTangent(Math.toRadians(270))
-                        .lineToY(20)
+                        .lineToY(10)
                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
