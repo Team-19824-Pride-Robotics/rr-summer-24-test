@@ -122,7 +122,7 @@ public class Auto_Summer_24 extends LinearOpMode {
         //Actions like a lift going up could usually happen in parallel with a trajectory
         Actions.runBlocking(new SequentialAction(
                 trajectoryActionChosen,
-                claw.openClaw(),
+                //claw.openClaw(),
                 //if an action needs time to run (like a claw opening), use a SleepAction
                 new SleepAction(2),
                 trajectoryActionCloseOut));
