@@ -57,7 +57,7 @@ public class Auto_Summer_24 extends LinearOpMode {
                 .setTangent(0)
                 .splineToConstantHeading(new Vector2d(10, 48), Math.toRadians(0))
                 //.splineTo(new Vector2d(10, 48), Math.toRadians(0))
-                //.strafeTo(new Vector2d(20, -40))
+                .strafeTo(new Vector2d(20, -40))
                 //.lineToY(12)
                 //.turn(Math.toRadians(turnAmt))
                 //.lineToX(0)
