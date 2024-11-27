@@ -20,36 +20,58 @@ public class MeepMeepTesting {
                     //segment 1 - parallel with raise lift and arm at score height
                     .lineToX(-36)
                     //segment 2 - parallel with lift to pickup position
-                    .lineToX(-44)
-                    .turn(Math.toRadians(-180))
+                    .lineToX(-50)
+
                     .setTangent(0)
-                    .splineToConstantHeading(new Vector2d(-55, -45), Math.toRadians(180))
+                   // .splineTo(new Vector2d(-55, -45), Math.toRadians(180))
+                    .splineToLinearHeading(new Pose2d(-55, -45, Math.toRadians(180)), Math.toRadians(180))
+
+
+                    //.turn(Math.toRadians(-180))
                     //segment 3 - slowly!
                     .lineToX(-62, new TranslationalVelConstraint(5))
                     //segment 4 - back off the wall and turn
                     .lineToX(-50)
-                    .turn(Math.toRadians(-180))
-                    //segment 5 - parallel with raise lift and arm at score height
-                    .splineToConstantHeading(new Vector2d(-36, -12), Math.toRadians(0))
-                //segment 2 - parallel with lift to pickup position
-                .lineToX(-44)
-                .turn(Math.toRadians(-180))
+                    .splineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(0)), Math.toRadians(0))
+
+                .lineToX(-50)
+
                 .setTangent(0)
-                .splineToConstantHeading(new Vector2d(-55, -45), Math.toRadians(180))
+                // .splineTo(new Vector2d(-55, -45), Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-55, -45, Math.toRadians(180)), Math.toRadians(180))
                 //segment 3 - slowly!
                 .lineToX(-62, new TranslationalVelConstraint(5))
                 //segment 4 - back off the wall and turn
                 .lineToX(-50)
-                .turn(Math.toRadians(-180))
-                //segment 5 - parallel with raise lift and arm at score height
-                .splineToConstantHeading(new Vector2d(-36, -16), Math.toRadians(0))
-                //segment 2 - parallel with lift to pickup position
-                .lineToX(-44)
-                .turn(Math.toRadians(-180))
-                .setTangent(0)
-                .splineToConstantHeading(new Vector2d(-55, -45), Math.toRadians(180))
-                //segment 3 - slowly!
-                .lineToX(-62, new TranslationalVelConstraint(5))
+                .splineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(0)), Math.toRadians(0))
+
+
+
+
+
+//                    .turn(Math.toRadians(-180))
+                    //segment 5 - parallel with raise lift and arm at score height
+                   // .splineToSplineHeading(new Pose2d(-36, -12, Math.toRadians(0))
+//                //segment 2 - parallel with lift to pickup position
+//                .lineToX(-44)
+//                .turn(Math.toRadians(-180))
+//                .setTangent(0)
+//                .splineToConstantHeading(new Vector2d(-55, -45), Math.toRadians(180))
+//                //segment 3 - slowly!
+//                .lineToX(-62, new TranslationalVelConstraint(5))
+//                //segment 4 - back off the wall and turn
+//                .lineToX(-50)
+//                //.turn(Math.toRadians(-180))
+//                //segment 5 - parallel with raise lift and arm at score height
+//                        .setTangent(Math.toRadians(-90))
+//                .splineToConstantHeading(new Vector2d(-36, -16), Math.toRadians(0))
+//                //segment 2 - parallel with lift to pickup position
+//                .lineToX(-44)
+//                .turn(Math.toRadians(-180))
+//                .setTangent(0)
+//                .splineToConstantHeading(new Vector2d(-55, -45), Math.toRadians(180))
+//                //segment 3 - slowly!
+//                .lineToX(-62, new TranslationalVelConstraint(5))
 
 
 
