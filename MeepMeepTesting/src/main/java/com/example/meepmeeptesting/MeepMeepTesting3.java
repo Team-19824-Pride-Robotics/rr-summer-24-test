@@ -7,13 +7,7 @@ import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
-public class MeepMeepTesting {
+public class MeepMeepTesting3 {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
 
@@ -30,61 +24,64 @@ public class MeepMeepTesting {
                     //segment 2 - backs off the sub and strafes right to clear it
                 // parallel with lift to pickup position
                     .lineToX(-40)
-                    .strafeTo(new Vector2d(-40, -35))
+                    .strafeToLinearHeading(new Vector2d(-40, 50), Math.toRadians(180))
 
-                //segment 3 - moves on a diagonal to get behind the sample
+                //segment 3 - moves in position to score the sample
+                    .turn(Math.toRadians(-45))
                     .setTangent(0)
-                    .lineToX(-12)
-
-                //segment 4 - spline path with a 180 built in, gets in position to push
-                    .setTangent(0)
-                    .splineToLinearHeading(new Pose2d(-10, -45, Math.toRadians(180)), Math.toRadians(180))
-
-                //segment 5 - push two samples into the zone
-                    .lineToX(-55)
-                    .lineToX(-12)
-                    .strafeTo(new Vector2d(-12, -55))
-                    .setTangent(0)
-                    .lineToX(-55)
-
-                //segment 6 - slowly! to pick up the specimen
-                    //.setTangent(135)
-                    .lineToX(-62, new TranslationalVelConstraint(10))
-
-                //segment 7 - spline path back to the sub with a 180
-                //parallel with lift to scoring position
                     .lineToX(-50)
-                    .splineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(0)), Math.toRadians(0))
 
-               //segment 8 - spline path back to the zone with a 180
-                // parallel with lift to pickup position
-                    .lineToX(-45)
-                    .setTangent(0)
-                    .splineToLinearHeading(new Pose2d(-55, -45, Math.toRadians(180)), Math.toRadians(180))
-
-                //segment 6 - slowly! to pick up the specimen
-                //.setTangent(135)
-                .lineToX(-62, new TranslationalVelConstraint(10))
-
-                //segment 7 - spline path back to the sub with a 180
-                //parallel with lift to scoring position
-                .lineToX(-50)
-                .splineToLinearHeading(new Pose2d(-36, -16, Math.toRadians(0)), Math.toRadians(0))
-
-                //segment 8 - spline path back to the zone with a 180
-                // parallel with lift to pickup position
-                .lineToX(-45)
+                //segment 4 - go back then strafe over for the second sample
+                .turn(Math.toRadians(45))
                 .setTangent(0)
-                .splineToLinearHeading(new Pose2d(-55, -45, Math.toRadians(180)), Math.toRadians(180))
+                .lineToX(-40)
+                .strafeToLinearHeading(new Vector2d(-40, 60), Math.toRadians(180))
 
-                //segment 6 - slowly! to pick up the specimen
-                //.setTangent(135)
-                .lineToX(-62, new TranslationalVelConstraint(10))
-
-                //segment 7 - spline path back to the sub with a 180
-                //parallel with lift to scoring position
-                .lineToX(-50)
-                .splineToLinearHeading(new Pose2d(-36, -20, Math.toRadians(0)), Math.toRadians(0))
+//                //segment 5 - push two samples into the zone
+//                    .lineToX(-55)
+//                    .lineToX(-12)
+//                    .strafeTo(new Vector2d(-12, -55))
+//                    .setTangent(0)
+//                    .lineToX(-55)
+//
+//                //segment 6 - slowly! to pick up the specimen
+//                    //.setTangent(135)
+//                    .lineToX(-62, new TranslationalVelConstraint(10))
+//
+//                //segment 7 - spline path back to the sub with a 180
+//                //parallel with lift to scoring position
+//                    .lineToX(-50)
+//                    .splineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(0)), Math.toRadians(0))
+//
+//               //segment 8 - spline path back to the zone with a 180
+//                // parallel with lift to pickup position
+//                    .lineToX(-45)
+//                    .setTangent(0)
+//                    .splineToLinearHeading(new Pose2d(-55, -45, Math.toRadians(180)), Math.toRadians(180))
+//
+//                //segment 6 - slowly! to pick up the specimen
+//                //.setTangent(135)
+//                .lineToX(-62, new TranslationalVelConstraint(10))
+//
+//                //segment 7 - spline path back to the sub with a 180
+//                //parallel with lift to scoring position
+//                .lineToX(-50)
+//                .splineToLinearHeading(new Pose2d(-36, -16, Math.toRadians(0)), Math.toRadians(0))
+//
+//                //segment 8 - spline path back to the zone with a 180
+//                // parallel with lift to pickup position
+//                .lineToX(-45)
+//                .setTangent(0)
+//                .splineToLinearHeading(new Pose2d(-55, -45, Math.toRadians(180)), Math.toRadians(180))
+//
+//                //segment 6 - slowly! to pick up the specimen
+//                //.setTangent(135)
+//                .lineToX(-62, new TranslationalVelConstraint(10))
+//
+//                //segment 7 - spline path back to the sub with a 180
+//                //parallel with lift to scoring position
+//                .lineToX(-50)
+//                .splineToLinearHeading(new Pose2d(-36, -20, Math.toRadians(0)), Math.toRadians(0))
 
 
 //                    .turn(Math.toRadians(-180))
@@ -128,11 +125,6 @@ public class MeepMeepTesting {
     //                .turn(Math.toRadians(90))
                     .build());
 
-//        Image img = null;
-//        try { img = ImageIO.read(new File("C:\\Users\farnd\\Downloads\\IMG_8320.PNG")); }
-//        catch(IOException e) {}
-//
-//        meepMeep.setBackground(img)
         meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
