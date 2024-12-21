@@ -16,114 +16,53 @@ public class MeepMeepTesting3 {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-62, -8, 0))
-                    //segment 1 - drives up to the sub and scores the preload
-                // parallel with lift to score height
-                    .lineToX(-36)
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-62, 8, Math.toRadians(90)))
+                    //segment 1 - drives up to the basket and scores the preload
+                // parallel with lift and arm/claw to score position, add wait time for score
+                    .strafeToLinearHeading(new Vector2d(-58,58), Math.toRadians(135))
+                    .waitSeconds(1)
 
-                    //segment 2 - backs off the sub and strafes right to clear it
-                // parallel with lift to pickup position
-                    .lineToX(-40)
-                    .strafeToLinearHeading(new Vector2d(-40, 50), Math.toRadians(180))
+                    //segment 2 - get in position to grab second sample
+                // parallel with lift and arm/claw to pickup position
+                    .strafeToLinearHeading(new Vector2d(-40, 46), Math.toRadians(180))
+
+                //wait here while the intake does its intaking and transferring
+                    .waitSeconds(2)
 
                 //segment 3 - moves in position to score the sample
-                    .turn(Math.toRadians(-45))
-                    .setTangent(0)
-                    .lineToX(-50)
+                // parallel with lift and arm/claw to score position, add wait time for score
+                    .strafeToLinearHeading(new Vector2d(-58,58), Math.toRadians(135))
+                    .waitSeconds(1)
 
-                //segment 4 - go back then strafe over for the second sample
-                .turn(Math.toRadians(45))
-                .setTangent(0)
-                .lineToX(-40)
-                .strafeToLinearHeading(new Vector2d(-40, 60), Math.toRadians(180))
+                //segment 4 - strafe over for the third sample
+                    .strafeToLinearHeading(new Vector2d(-40, 60), Math.toRadians(180))
 
-//                //segment 5 - push two samples into the zone
-//                    .lineToX(-55)
-//                    .lineToX(-12)
-//                    .strafeTo(new Vector2d(-12, -55))
-//                    .setTangent(0)
-//                    .lineToX(-55)
-//
-//                //segment 6 - slowly! to pick up the specimen
-//                    //.setTangent(135)
-//                    .lineToX(-62, new TranslationalVelConstraint(10))
-//
-//                //segment 7 - spline path back to the sub with a 180
-//                //parallel with lift to scoring position
-//                    .lineToX(-50)
-//                    .splineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(0)), Math.toRadians(0))
-//
-//               //segment 8 - spline path back to the zone with a 180
-//                // parallel with lift to pickup position
-//                    .lineToX(-45)
-//                    .setTangent(0)
-//                    .splineToLinearHeading(new Pose2d(-55, -45, Math.toRadians(180)), Math.toRadians(180))
-//
-//                //segment 6 - slowly! to pick up the specimen
-//                //.setTangent(135)
-//                .lineToX(-62, new TranslationalVelConstraint(10))
-//
-//                //segment 7 - spline path back to the sub with a 180
-//                //parallel with lift to scoring position
-//                .lineToX(-50)
-//                .splineToLinearHeading(new Pose2d(-36, -16, Math.toRadians(0)), Math.toRadians(0))
-//
-//                //segment 8 - spline path back to the zone with a 180
-//                // parallel with lift to pickup position
-//                .lineToX(-45)
-//                .setTangent(0)
-//                .splineToLinearHeading(new Pose2d(-55, -45, Math.toRadians(180)), Math.toRadians(180))
-//
-//                //segment 6 - slowly! to pick up the specimen
-//                //.setTangent(135)
-//                .lineToX(-62, new TranslationalVelConstraint(10))
-//
-//                //segment 7 - spline path back to the sub with a 180
-//                //parallel with lift to scoring position
-//                .lineToX(-50)
-//                .splineToLinearHeading(new Pose2d(-36, -20, Math.toRadians(0)), Math.toRadians(0))
+                //wait here while the intake does its intaking and transferring
+                    .waitSeconds(2)
+
+                //segment 5 - moves in position to score the sample
+                // parallel with lift and arm/claw to score position, add wait time for score
+                    .strafeToLinearHeading(new Vector2d(-58,58), Math.toRadians(135))
+                    .waitSeconds(1)
+
+                //segment 6 - strafe to same position, new angle
+                    .strafeToLinearHeading(new Vector2d(-40, 60), Math.toRadians(200))
+
+                //wait here while the intake does its intaking and transferring
+                .waitSeconds(2)
+
+                //segment 7 - moves in position to score the sample
+                // parallel with lift and arm/claw to score position, add wait time for score
+                .strafeToLinearHeading(new Vector2d(-58,58), Math.toRadians(135))
+                .waitSeconds(1)
+
+                //segment 8 - park in ascent zone
+                .strafeToLinearHeading(new Vector2d(-10,20), Math.toRadians(90))
 
 
-//                    .turn(Math.toRadians(-180))
-                    //segment 5 - parallel with raise lift and arm at score height
-                   // .splineToSplineHeading(new Pose2d(-36, -12, Math.toRadians(0))
-//                //segment 2 - parallel with lift to pickup position
-//                .lineToX(-44)
-//                .turn(Math.toRadians(-180))
-//                .setTangent(0)
-//                .splineToConstantHeading(new Vector2d(-55, -45), Math.toRadians(180))
-//                //segment 3 - slowly!
-//                .lineToX(-62, new TranslationalVelConstraint(5))
-//                //segment 4 - back off the wall and turn
-//                .lineToX(-50)
-//                //.turn(Math.toRadians(-180))
-//                //segment 5 - parallel with raise lift and arm at score height
-//                        .setTangent(Math.toRadians(-90))
-//                .splineToConstantHeading(new Vector2d(-36, -16), Math.toRadians(0))
-//                //segment 2 - parallel with lift to pickup position
-//                .lineToX(-44)
-//                .turn(Math.toRadians(-180))
-//                .setTangent(0)
-//                .splineToConstantHeading(new Vector2d(-55, -45), Math.toRadians(180))
-//                //segment 3 - slowly!
-//                .lineToX(-62, new TranslationalVelConstraint(5))
+                .build());
 
 
-
-
-    //                .strafeTo(new Vector2d(-36, -16))
-    //                .splineToConstantHeading(new Vector2d(0, -40), Math.toRadians(0))
-    //                .turn(Math.toRadians(180))
-    //                .splineToConstantHeading(new Vector2d(-55, -45), Math.toRadians(180))
-    //                .splineToConstantHeading(new Vector2d(0, -45), Math.toRadians(180))
-
-    //                .lineToY(30)
-    //                .turn(Math.toRadians(90))
-    //                .lineToX(0)
-    //                .turn(Math.toRadians(90))
-    //                .lineToY(0)
-    //                .turn(Math.toRadians(90))
-                    .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
                 .setDarkMode(true)
