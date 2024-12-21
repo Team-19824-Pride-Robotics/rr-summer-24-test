@@ -87,6 +87,8 @@ public class MeepMeepTesting {
                 .splineToLinearHeading(new Pose2d(-36, -20, Math.toRadians(0)), Math.toRadians(0))
 
 
+
+
 //                    .turn(Math.toRadians(-180))
                     //segment 5 - parallel with raise lift and arm at score height
                    // .splineToSplineHeading(new Pose2d(-36, -12, Math.toRadians(0))
